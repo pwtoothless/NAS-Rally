@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		4C0EA78E2FCD262900F71213 /* Rally Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rally Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C0EA78E2FCD262900F71213 /* NAS Rally.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NAS Rally.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,7 +40,7 @@
 		4C0EA78F2FCD262900F71213 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4C0EA78E2FCD262900F71213 /* Rally Chat.app */,
+				4C0EA78E2FCD262900F71213 /* NAS Rally.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4C0EA78D2FCD262900F71213 /* Rally Chat */ = {
+		4C0EA78D2FCD262900F71213 /* NAS Rally */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4C0EA7992FCD262B00F71213 /* Build configuration list for PBXNativeTarget "Rally Chat" */;
+			buildConfigurationList = 4C0EA7992FCD262B00F71213 /* Build configuration list for PBXNativeTarget "NAS Rally" */;
 			buildPhases = (
 				4C0EA78A2FCD262900F71213 /* Sources */,
 				4C0EA78B2FCD262900F71213 /* Frameworks */,
@@ -63,11 +63,11 @@
 			fileSystemSynchronizedGroups = (
 				4C0EA7902FCD262900F71213 /* Rally Chat */,
 			);
-			name = "Rally Chat";
+			name = "NAS Rally";
 			packageProductDependencies = (
 			);
 			productName = "Rally Chat";
-			productReference = 4C0EA78E2FCD262900F71213 /* Rally Chat.app */;
+			productReference = 4C0EA78E2FCD262900F71213 /* NAS Rally.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4C0EA7892FCD262900F71213 /* Build configuration list for PBXProject "Rally Chat" */;
+			buildConfigurationList = 4C0EA7892FCD262900F71213 /* Build configuration list for PBXProject "NAS Rally" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -94,12 +94,15 @@
 			);
 			mainGroup = 4C0EA7852FCD262900F71213;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4C0EA7AE2FCD293B00F71213 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4C0EA78F2FCD262900F71213 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4C0EA78D2FCD262900F71213 /* Rally Chat */,
+				4C0EA78D2FCD262900F71213 /* NAS Rally */,
 			);
 		};
 /* End PBXProject section */
@@ -313,7 +316,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4C0EA7892FCD262900F71213 /* Build configuration list for PBXProject "Rally Chat" */ = {
+		4C0EA7892FCD262900F71213 /* Build configuration list for PBXProject "NAS Rally" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4C0EA7972FCD262B00F71213 /* Debug */,
@@ -322,7 +325,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4C0EA7992FCD262B00F71213 /* Build configuration list for PBXNativeTarget "Rally Chat" */ = {
+		4C0EA7992FCD262B00F71213 /* Build configuration list for PBXNativeTarget "NAS Rally" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4C0EA79A2FCD262B00F71213 /* Debug */,
@@ -332,6 +335,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4C0EA7AE2FCD293B00F71213 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.46.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 4C0EA7862FCD262900F71213 /* Project object */;
 }
