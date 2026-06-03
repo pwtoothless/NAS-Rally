@@ -14,3 +14,9 @@ struct ChatView: View {
         Text("Chat")
     }
 }
+
+struct MessageView: View {
+    var body: some View {
+        Text("Chat")
+    }
+}

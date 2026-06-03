@@ -39,6 +39,8 @@ struct RalliesView: View {
                                     .shadow(radius: 5)
                             }
                         }
+                        .padding(.trailing, 30)
+                        
                         VStack {
                             if person.rallieNames.indices.contains(idx) {
                                 Text(person.rallieNames[idx])

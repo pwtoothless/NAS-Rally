@@ -19,34 +19,26 @@ import SwiftUI
 /// - **Settings**: App preferences and configuration controls.
 
 struct ContentView: View {
-    // Example: Create a sample PersonInfo instance
-    // In a real app, this data would likely come from a ViewModel,
-    // User Defaults, or an API.
-    @State private var samplePerson = PersonInfo(name: "Ivy Lucca-McCoy", id: 1, theme: "Default", bio: "This would be the bio", ralliesJoined: 1, rallieNames: ["temp"])
-
+    @Binding var person: PersonInfo
+    
     var body: some View {
         TabView() {
             Tab("Home", systemImage: "house") {
-                // Pass the samplePerson instance to HomeView
-                HomeView(person: $samplePerson)
+                HomeView(person: $person)
             }
             Tab("Rallies", systemImage: "car.2.fill") {
-                RalliesView(person: $samplePerson)
+                RalliesView(person: $person)
             }
             Tab("Chat", systemImage: "bubble.left.and.bubble.right") {
-                ChatView(person: $samplePerson)
+                ChatView(person: $person)
             }
             Tab("Profile", systemImage: "person.circle") {
-                ProfileView(person: $samplePerson)
+                ProfileView(person: $person)
             }
             Tab("Settings", systemImage: "gearshape") {
-                SettingsView(person: $samplePerson)
+                SettingsView(person: $person)
             }
         }
         .tabViewStyle(.sidebarAdaptable)
     }
-}
-
-#Preview {
-    ContentView()
 }

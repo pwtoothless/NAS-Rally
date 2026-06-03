@@ -115,5 +115,5 @@ struct ProfileView: View {
 // Add a preview for ProfileView for easier testing and development
 #Preview {
     // Create a sample PersonInfo for the preview
-    ProfileView(person: .constant(PersonInfo(name: "Sample Name", id: 1, theme: "Default", bio: "Sample Text", ralliesJoined: 1, rallieNames: ["temp"])))
+    ProfileView(person: .constant(PersonInfo(name: "Sample Name", theme: "Default", bio: "Sample Text", ralliesJoined: 1, rallieNames: ["temp"], privligeLevel: "User")))
 }
