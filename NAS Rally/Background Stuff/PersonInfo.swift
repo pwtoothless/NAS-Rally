@@ -17,17 +17,17 @@ struct PersonInfo {
     var privligeLevel: String
 }
 
-func getPersonInfo() -> PersonInfo {
-    let placeholderID = UUID(uuidString: "00000000-0000-0000-0000-000000000000") ?? UUID()
-    let joinedRallies = ["NAS Rally"]
-
-    return PersonInfo(
-        id: placeholderID,
-        name: "Peyton Ward",
-        theme: "Space",
-        bio: "I'm a programmer",
-        ralliesJoined: joinedRallies.count,
-        rallieNames: joinedRallies,
-        privligeLevel: "Admin"
-    )
-}
+//func getPersonInfo() -> PersonInfo {
+//    let placeholderID = UUID(uuidString: "00000000-0000-0000-0000-000000000000") ?? UUID()
+//    let joinedRallies = ["NAS Rally"]
+//
+//    return PersonInfo(
+//        id: placeholderID,
+//        name: "Peyton Ward",
+//        theme: "Space",
+//        bio: "I'm a programmer",
+//        ralliesJoined: joinedRallies.count,
+//        rallieNames: joinedRallies,
+//        privligeLevel: "Admin"
+//    )
+//}

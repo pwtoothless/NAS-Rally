@@ -9,30 +9,38 @@ import SwiftUI
 
 @main
 struct NAS_RallyApp: App {
-     @State private var personInfo = getPersonInfo()
+    @State private var personInfo: PersonInfo? = nil
+    @State private var isLoading = true
     
     var body: some Scene {
         WindowGroup {
-            if !(checkFirstLaunch()) {
-                LoginView(person: $personInfo)
+            Group {
+                if isLoading {
+                    ProgressView("Loading Profile...")
+                } else if let person = personInfo {
+                    ContentView(person: Binding(
+                        get: { person },
+                        set: { personInfo = $0 }
+                    ))
+                } else {
+                    LoginView(person: Binding(
+                        get: { personInfo ?? PersonInfo(id: UUID(), name: "", theme: "", bio: "", ralliesJoined: 0, rallieNames: [], privligeLevel: "") },
+                        set: { personInfo = $0 }
+                    ))
+                }
             }
-            else {
-                ContentView(person: $personInfo)
+            .task {
+                await loadSession()
             }
         }
     }
-}
-
-func checkFirstLaunch() -> Bool {
-    let defaults = UserDefaults.standard
-    let hasLaunchedBefore = defaults.bool(forKey: "hasLaunchedBefore")
     
-    if !hasLaunchedBefore {
-        print("This is the first time the app is launched since installation!")
-        defaults.set(true, forKey: "hasLaunchedBefore")
-        return true
-    } else {
-        print("The app has been launched before.")
-        return false
+    private func loadSession() async {
+        do {
+            self.personInfo = try await fetchCurrentProfile()
+        } catch {
+            print("No active session or error fetching profile: \(error)")
+        }
+        self.isLoading = false
     }
 }

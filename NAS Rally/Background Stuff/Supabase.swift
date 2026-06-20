@@ -45,6 +45,18 @@ nonisolated private struct SupabasePersonRow: Codable {
     }
 }
 
+// MARK: - App Helper Functions
+func fetchCurrentProfile() async throws -> PersonInfo? {
+    let session = try await supabase.auth.session
+    let profile: SupabasePersonRow = try await supabase.from("profiles")
+        .select()
+        .eq("id", value: session.user.id.uuidString)
+        .single()
+        .execute()
+        .value
+    return profile.personInfo
+}
+
 nonisolated private struct NewSupabasePersonRow: Encodable {
     var id: UUID
     var name: String
