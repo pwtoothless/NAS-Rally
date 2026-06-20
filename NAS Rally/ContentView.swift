@@ -32,8 +32,8 @@ struct ContentView: View {
             Tab("Chat", systemImage: "bubble.left.and.bubble.right") {
                 ChatView(person: $person)
             }
-            Tab("Profile", systemImage: "person.circle") {
-                ProfileView(person: $person)
+            Tab("Wavers", systemImage: "long.text.page.and.pencil") {
+                WaversView(person: $person)
             }
             Tab("Settings", systemImage: "gearshape") {
                 SettingsView(person: $person)

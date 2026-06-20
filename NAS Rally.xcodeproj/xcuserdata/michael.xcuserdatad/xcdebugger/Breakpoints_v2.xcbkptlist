@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "7A905504-7DE1-4459-9DB3-829B6253AFC5"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "55323174-148D-4F2B-96D1-7ABCAFB409CE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NAS Rally/Background Stuff/Supabase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "login(Email:Password:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "55323174-148D-4F2B-96D1-7ABCAFB409CE - 77d806ea51c7b04a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for NAS_Rally.login(Email: Swift.String, Password: Swift.String) async -&gt; NAS_Rally.AuthResult"
+                  moduleName = "NAS Rally.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/michael/Code/NAS-Rally/NAS%20Rally/Background%20Stuff/Supabase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "83"
+                  endingLineNumber = "83">
+               </Location>
+               <Location
+                  uuid = "55323174-148D-4F2B-96D1-7ABCAFB409CE - cc0e8f02f0248677"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for NAS_Rally.login(Email: Swift.String, Password: Swift.String) async -&gt; NAS_Rally.AuthResult"
+                  moduleName = "NAS Rally.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/michael/Code/NAS-Rally/NAS%20Rally/Background%20Stuff/Supabase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "83"
+                  endingLineNumber = "83">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

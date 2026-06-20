@@ -1,18 +1,18 @@
 //
-//  Settings.swift
+//  Wavers.swift
 //  NAS Rally
 //
-//  Created by Peyton Ward on 5/31/26.
+//  Created by Peyton Ward on 6/19/26.
 //
 
 import SwiftUI
 
-struct SettingsView: View {
+struct WaversView: View {
     @Binding var person: PersonInfo
     
     var body: some View {
         NavigationStack {
-            Text("Settings")
+            Text("Wavers")
         }
     }
 }

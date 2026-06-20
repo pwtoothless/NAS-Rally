@@ -11,7 +11,8 @@ import PhotosUI
 struct ProfileView: View {
     @Binding var person: PersonInfo
     @State private var editMode: Bool = false
-    @State private var textInput = ""
+    @State private var bioInput = ""
+    @State private var nameInput = ""
     @FocusState private var isBioFeildFocused: Bool
     @FocusState private var isNameFeildFocused: Bool
     @State private var imageSelection: PhotosPickerItem? = nil
@@ -23,10 +24,10 @@ struct ProfileView: View {
                 Button("Edit Mode") {
                     editMode.toggle()
                     if !editMode {
-                        person.bio = textInput
+                        person.bio = bioInput
                     }
                     else {
-                        textInput = person.bio
+                        bioInput = person.bio
                     }
                 }
             }
@@ -42,7 +43,7 @@ struct ProfileView: View {
                             .shadow(radius: 5)
                             .overlay(alignment: .trailing) {
                                 Button(action: {
-                                }) {
+                                }) {	
                                     PhotosPicker(selection: $imageSelection, matching: .images, photoLibrary: .shared()) {
                                         EmptyView()
                                     }
@@ -61,7 +62,7 @@ struct ProfileView: View {
                     
                     VStack {
                         if (editMode) {
-                            TextField("Enter Name", text: $textInput)
+                            TextField("Enter Name", text: $nameInput)
                                 .textFieldStyle(.roundedBorder)
                                 .focused($isNameFeildFocused)
                             
@@ -96,7 +97,7 @@ struct ProfileView: View {
                         Text(person.bio)
                     }
                     else {
-                        TextField("Enter bio", text: $textInput)
+                        TextField("Enter bio", text: $bioInput)
                             .textFieldStyle(.roundedBorder)
                             .focused($isBioFeildFocused)
                     }
@@ -110,10 +111,4 @@ struct ProfileView: View {
             Spacer()
         }
     }
-}
-
-// Add a preview for ProfileView for easier testing and development
-#Preview {
-    // Create a sample PersonInfo for the preview
-    ProfileView(person: .constant(PersonInfo(name: "Sample Name", theme: "Default", bio: "Sample Text", ralliesJoined: 1, rallieNames: ["temp"], privligeLevel: "User")))
 }

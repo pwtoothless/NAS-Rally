@@ -1,7 +1,7 @@
 //
 //  Chat.swift
 //  NAS Rally
-//
+//	
 //  Created by Peyton Ward on 5/31/26.
 //
 
@@ -11,12 +11,17 @@ struct ChatView: View {
     @Binding var person: PersonInfo
     
     var body: some View {
-        Text("Chat")
+        NavigationStack {
+            Text("Chat")
+            NavigationLink(destination: MessageView()) {
+                Text("Open Messages")
+            }
+        }
     }
 }
 
 struct MessageView: View {
     var body: some View {
-        Text("Chat")
+        Text("Messages")
     }
 }
