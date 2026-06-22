@@ -5,7 +5,7 @@
 //  Created by Peyton Ward on 5/31/26.
 //
 
-import SwiftUI
+import Foundation // Needed for UUID Variable
 
 struct PersonInfo {
     var id: UUID
@@ -16,18 +16,3 @@ struct PersonInfo {
     var rallieNames: [String]
     var privligeLevel: String
 }
-
-//func getPersonInfo() -> PersonInfo {
-//    let placeholderID = UUID(uuidString: "00000000-0000-0000-0000-000000000000") ?? UUID()
-//    let joinedRallies = ["NAS Rally"]
-//
-//    return PersonInfo(
-//        id: placeholderID,
-//        name: "Peyton Ward",
-//        theme: "Space",
-//        bio: "I'm a programmer",
-//        ralliesJoined: joinedRallies.count,
-//        rallieNames: joinedRallies,
-//        privligeLevel: "Admin"
-//    )
-//}

@@ -29,7 +29,7 @@ struct HomeView: View {
                     .font(.headline)
             }
             .foregroundColor(.primary)
-            .frame(width: .infinity, height: 150)
+            .frame(height: 150)
             .padding(.leading, 15)
             .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
         }

@@ -38,6 +38,11 @@ struct ContentView: View {
             Tab("Settings", systemImage: "gearshape") {
                 SettingsView(person: $person)
             }
+            if (person.privligeLevel == "Admin") {
+                Tab("Admin", systemImage: "person.badge.checkmark.seal.fill") {
+                    AdminView(person: $person)
+                }
+            }
         }
         .tabViewStyle(.sidebarAdaptable)
     }

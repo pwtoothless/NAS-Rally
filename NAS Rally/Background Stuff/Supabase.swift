@@ -107,7 +107,7 @@ func signup(Name: String, Email: String, Password: String) async -> AuthResult {
         let newPerson = NewSupabasePersonRow(
             id: authResponse.user.id,
             name: Name,
-            theme: "Default",
+            theme: "Dark",
             bio: "",
             ralliesJoined: 0,
             rallieNames: [],
