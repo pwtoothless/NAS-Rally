@@ -11,104 +11,84 @@ import PhotosUI
 struct ProfileView: View {
     @Binding var person: PersonInfo
     @State private var editMode: Bool = false
-    @State private var bioInput = ""
-    @State private var nameInput = ""
-    @FocusState private var isBioFeildFocused: Bool
-    @FocusState private var isNameFeildFocused: Bool
+    @State private var bioInput: String
+    @State private var nameInput: String
     @State private var imageSelection: PhotosPickerItem? = nil
+    @State private var isSaving: Bool = false
+    @State private var profileImageURL: URL? = nil
+    
+    init(person: Binding<PersonInfo>) {
+        self._person = person
+        self._bioInput = State(initialValue: person.wrappedValue.bio)
+        self._nameInput = State(initialValue: person.wrappedValue.name)
+    }
     
     var body: some View {
         VStack {
             HStack {
                 Text("Profile")
-                Button("Edit Mode") {
-                    editMode.toggle()
-                    if !editMode {
+                Spacer()
+                Button(editMode ? (isSaving ? "Saving..." : "Save") : "Edit") {
+                    if editMode {
+                        isSaving = true
+                        person.name = nameInput
                         person.bio = bioInput
-                    }
-                    else {
-                        bioInput = person.bio
+                        
+                        Task {
+                            do {
+                                try await updateProfile(person: person)
+                                editMode = false
+                            } catch {
+                                print("Failed to update profile: \(error)")
+                            }
+                            isSaving = false
+                        }
+                    } else {
+                        editMode = true
                     }
                 }
+                .disabled(isSaving)
             }
-            VStack {
-                HStack {
-                    VStack {
-                        Image(.personPic)
+            .padding()
+            
+            VStack(spacing: 20) {
+                AsyncImage(url: profileImageURL) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView().frame(width: 100, height: 100)
+                    case .success(let image):
+                        image.resizable().scaledToFill().frame(width: 100, height: 100).clipShape(Circle())
+                    case .failure:
+                        Image(systemName: "person.crop.circle.fill")
                             .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 200)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                            .shadow(radius: 5)
-                            .overlay(alignment: .trailing) {
-                                Button(action: {
-                                }) {	
-                                    PhotosPicker(selection: $imageSelection, matching: .images, photoLibrary: .shared()) {
-                                        EmptyView()
-                                    }
-                                    if (editMode) {
-                                        Image(systemName: "pencil.circle.fill")
-                                            .symbolRenderingMode(.multicolor)
-                                            .font(.system(size: 30))
-                                            .foregroundColor(.accentColor)
-                                            .offset(y: 35)
-                                    }
-                                }
-                                .buttonStyle(.borderless)
-                            }
-                    }
-                    .padding(.trailing, 30)
-                    
-                    VStack {
-                        if (editMode) {
-                            TextField("Enter Name", text: $nameInput)
-                                .textFieldStyle(.roundedBorder)
-                                .focused($isNameFeildFocused)
-                            
-                            Button("Edit Name") {
-                                isNameFeildFocused = true
-                            }
-                            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-                        }
-                        else {
-                            Text(person.name)
-                        }
+                            .foregroundStyle(.gray)
+                            .frame(width: 100, height: 100)
+                    @unknown default:
+                        EmptyView()
                     }
                 }
                 
-                VStack {
-                    HStack {
-                        if (editMode) {
-                            Text("Bio")
-                                .padding(.leading, 15)
-                            Spacer()
-                            Button("Edit Bio") {
-                                isBioFeildFocused = true
-                            }
-                            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-                            .padding(.trailing, 15)
-                        }
-                        else {
-                            Text("Bio")
-                        }
-                    }
-                    if(!editMode) {
-                        Text(person.bio)
-                    }
-                    else {
-                        TextField("Enter bio", text: $bioInput)
-                            .textFieldStyle(.roundedBorder)
-                            .focused($isBioFeildFocused)
-                    }
+                if editMode {
+                    TextField("Name", text: $nameInput)
+                        .textFieldStyle(.roundedBorder)
+                    TextField("Bio", text: $bioInput)
+                        .textFieldStyle(.roundedBorder)
+                } else {
+                    Text(person.name).font(.title)
+                    Text(person.bio)
                 }
             }
-            .foregroundColor(.primary)
-            .padding(.leading, 25)
-            .padding(.trailing, 25)
-            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 24).fill(.ultraThinMaterial))
             
             Spacer()
+        }
+        .task {
+            do {
+                self.profileImageURL = try await getProfileImageURL(for: person.id)
+            } catch {
+                print("Failed to load image URL: \(error)")
+            }
         }
     }
 }

@@ -13,6 +13,19 @@ let supabase = SupabaseClient(
     supabaseKey: "sb_publishable_xflKOJnjZKIKm7f_Ri4Bn4_7-zhLiVC"
 )
 
+// Helper struct for encoding dynamic values
+struct AnyEncodable: Encodable {
+    private let encode: (Encoder) throws -> Void
+
+    init<T: Encodable>(_ value: T) {
+        self.encode = { encoder in try value.encode(to: encoder) }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        try encode(encoder)
+    }
+}
+
 nonisolated private struct SupabasePersonRow: Codable {
     var id: UUID
     var name: String
@@ -21,6 +34,7 @@ nonisolated private struct SupabasePersonRow: Codable {
     var ralliesJoined: Int
     var rallieNames: [String]
     var privligeLevel: String
+    var tos: Bool
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -30,6 +44,7 @@ nonisolated private struct SupabasePersonRow: Codable {
         case ralliesJoined = "rallies_joined"
         case rallieNames = "rallie_names"
         case privligeLevel = "privilege_level"
+        case tos
     }
     
     var personInfo: PersonInfo {
@@ -40,7 +55,8 @@ nonisolated private struct SupabasePersonRow: Codable {
             bio: bio,
             ralliesJoined: ralliesJoined,
             rallieNames: rallieNames,
-            privligeLevel: privligeLevel
+            privligeLevel: privligeLevel,
+            tos: tos
         )
     }
 }
@@ -187,4 +203,26 @@ private func authErrorMessage(for error: any Error, fallback: String) -> String 
     }
     
     return "Signup failed. Please try again."
+}
+
+func updateProfile(person: PersonInfo) async throws {
+    let updateData: [String: AnyEncodable] = [
+        "name": AnyEncodable(person.name),
+        "bio": AnyEncodable(person.bio)
+    ]
+    
+    try await supabase.from("profiles")
+        .update(updateData)
+        .eq("id", value: person.id.uuidString)
+        .execute()
+}
+
+func getProfileImageURL(for userID: UUID) async throws -> URL {
+    let signedURL = try await supabase.storage
+        .from("Profile Pictures")
+        .createSignedURL(
+            path: userID.uuidString + "/images/profile.jpg",
+            expiresIn: 60 // URL expires in 60 seconds
+        )
+    return signedURL
 }

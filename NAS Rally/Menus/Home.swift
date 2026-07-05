@@ -13,6 +13,9 @@ struct HomeView: View {
     var body: some View {
         VStack {
             Text("Home")
+                .padding(.top, 10)
+                .padding(.bottom, 10)
+                .bold()
             
             // Main Page
             HStack {
@@ -31,9 +34,11 @@ struct HomeView: View {
             .foregroundColor(.primary)
             .frame(height: 150)
             .padding(.leading, 15)
-            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .glassEffectCompat(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            
+            Text("Updates for user go here")
+            
+            Spacer() // Top Aligns the Page
         }
-        Text("Updates for user go here")
-        Spacer() // Top Aligns the Page
     }
 }

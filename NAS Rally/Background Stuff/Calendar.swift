@@ -15,10 +15,6 @@ struct CalendarEvent {
     var peopleGoing: Int
 }
 
-func getCalendarEvents() -> [CalendarEvent] {
-    return []
-}
-
 func saveCalendarEvent(_ event: CalendarEvent) {
     // Will take in event with info, then format to an event making call
 }

@@ -16,45 +16,46 @@ struct RalliesView: View {
                 Text("Rallies")
                     .padding(.top, 10)
                     .padding(.bottom, 10)
+                    .bold()
                 
                 ForEach(0..<person.ralliesJoined, id: \.self) { idx in
                     HStack {
-                        VStack {
-                            if person.rallieNames.indices.contains(idx) {
-                                Image("RallyLogos/Logo" + person.rallieNames[idx])
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 100, height: 200)
-                                    .clipShape(Circle())
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                                    .shadow(radius: 5)
-                            }
-                            else {
-                                Image("RallyLogos/LogoUnknown")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 100, height: 200)
-                                    .clipShape(Circle())
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                                    .shadow(radius: 5)
-                            }
+                        NavigationLink(destination: RallyInfoView(person: $person, rallyName: $person.rallieNames[idx])) {
+                                if person.rallieNames.indices.contains(idx) {
+                                    Image("RallyLogos/Logo" + person.rallieNames[idx])
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 100, height: 200)
+                                        .clipShape(Circle())
+                                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                        .shadow(radius: 5)
+                                }
+                                else {
+                                    Image("RallyLogos/LogoUnknown")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 100, height: 200)
+                                        .clipShape(Circle())
+                                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                        .shadow(radius: 5)
+                                }
                         }
-                        .padding(.trailing, 30)
-                        
-                        VStack {
-                            if person.rallieNames.indices.contains(idx) {
-                                Text(person.rallieNames[idx])
-                            }
-                            else {
-                                Text("")
-                                
+                        NavigationLink(destination: RallyInfoView(person: $person, rallyName: $person.rallieNames[idx])) {
+                            VStack {
+                                if person.rallieNames.indices.contains(idx) {
+                                    Text(person.rallieNames[idx])
+                                }
+                                else {
+                                    Text("")
+                                    
+                                }
                             }
                         }
                     } //HStack Style
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity)
                     .ignoresSafeArea(edges: .horizontal)
-                    .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                    .glassEffectCompat(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                 }
                 Spacer()
                 
@@ -63,5 +64,14 @@ struct RalliesView: View {
             .padding(.trailing, 35)
         }
         .frame(maxWidth: .infinity)
+    }
+}
+
+struct RallyInfoView: View {
+    @Binding var person: PersonInfo
+    @Binding var rallyName: String
+    
+    var body: some View {
+        Text("This is the screen where text/images about a Rally is shown. Along with sheet views for payment costs and joining the Rally.")
     }
 }

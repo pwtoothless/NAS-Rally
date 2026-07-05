@@ -15,4 +15,5 @@ struct PersonInfo {
     var ralliesJoined: Int
     var rallieNames: [String]
     var privligeLevel: String
+    var tos: Bool
 }

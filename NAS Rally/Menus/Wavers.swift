@@ -15,6 +15,8 @@ struct WaversView: View {
             Text("Wavers")
                 .padding(.top, 10)
                 .padding(.bottom, 10)
+                .bold()
+            
             VStack {
                 ForEach(0..<person.ralliesJoined, id: \.self) { idx in
                     HStack {
@@ -33,7 +35,7 @@ struct WaversView: View {
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity)
                     .ignoresSafeArea(edges: .horizontal)
-                    .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                    .glassEffectCompat(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                 }
                 Spacer()
             }

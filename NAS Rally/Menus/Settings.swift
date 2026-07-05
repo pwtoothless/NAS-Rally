@@ -9,41 +9,68 @@ import SwiftUI
 
 struct SettingsView: View {
     @Binding var person: PersonInfo
-    let themes = ["Dark", "Light", "Blue", "Red"]
+    let themes = ["Auto", "Blue", "Red"]
     
     var body: some View {
-        NavigationStack {
+        VStack {
             Text("Settings")
-            VStack {
-                // Profile Men
-                HStack {
-                    NavigationLink (destination: ProfileView(person: $person)) {
+                .padding(.horizontal, 15)
+                .padding(.top, 10)
+                .padding(.bottom, 10)
+                .bold()
+            
+            List {
+                // Profile Menu
+                NavigationLink(destination: ProfileView(person: $person)) {
+                    HStack {
                         Image(systemName: "person.crop.circle.fill")
                             .padding(.leading, 10)
                         Text("Profile")
                             .padding(.leading, 8)
-                        
                     }
                 }
-                .frame(width: 350, height: 55, alignment: .leading)
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                 
+                // Theme Picker
                 HStack {
-                    Text("Theme")
+                    Image(systemName: "photo.artframe")
                         .padding(.leading, 10)
-                    Picker("Select a Theme", selection: $person.theme) { // Corrected binding to person.theme
-                        ForEach(themes, id: \.self) { themeName in // Corrected closure parameter name
-                            Text(themeName) // Corrected to display individual themeName
+                    
+                    Picker("Select a Theme", selection: $person.theme) {
+                        ForEach(themes, id: \.self) { themeName in
+                            Text(themeName)
                         }
                     }
-                    .pickerStyle(.menu)
                     .padding(.leading, 8)
+                    .pickerStyle(.menu)
                 }
-                .frame(width: 350, height: 55, alignment: .leading)
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                
+                // Payment Info
+                NavigationLink(destination: CardView(person: $person)) {
+                    HStack {
+                        Image(systemName: "creditcard")
+                            .padding(.leading, 10)
+                        Text("Payment Info")
+                            .padding(.leading, 8)
+                    }
+                }
+                
+                // ID View
+                NavigationLink(destination: IDView(person: $person)) {
+                    HStack {
+                        Image(systemName: "person.text.rectangle")
+                            .padding(.leading, 10)
+                        Text("ID")
+                            .padding(.leading, 8)
+                    }
+                }
+                
+                // Logout Option
+                HStack {
+                    Text("Logout")
+                        .padding(.leading, 10)
+                }
             }
-            .padding(.horizontal, 15)
+            .glassEffectCompat(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
         }
-        Spacer()
     }
 }
