@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C5505DE2FFC13A3008EB0A3 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5505DD2FFC13A3008EB0A3 /* ChatViewModel.swift */; };
 		4CEF39EA2FCF2F9300415DA9 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 4CEF39E92FCF2F9300415DA9 /* Auth */; };
 		4CEF39EC2FCF2F9300415DA9 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 4CEF39EB2FCF2F9300415DA9 /* Functions */; };
 		4CEF39EE2FCF2F9300415DA9 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 4CEF39ED2FCF2F9300415DA9 /* PostgREST */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		4C0EA78E2FCD262900F71213 /* NAS Rally.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NAS Rally.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C5505DD2FFC13A3008EB0A3 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -49,6 +51,7 @@
 			children = (
 				4C0EA7902FCD262900F71213 /* NAS Rally */,
 				4C0EA78F2FCD262900F71213 /* Products */,
+				4C5505DD2FFC13A3008EB0A3 /* ChatViewModel.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,6 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C5505DE2FFC13A3008EB0A3 /* ChatViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

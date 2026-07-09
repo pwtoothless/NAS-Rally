@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @Binding var person: PersonInfo
+    @State private var profileImageURL: URL? = nil
 
     var body: some View {
         VStack {
@@ -19,13 +20,21 @@ struct HomeView: View {
             
             // Main Page
             HStack {
-                Image(.personPic)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 200)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                    .shadow(radius: 5)
+                AsyncImage(url: profileImageURL) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView().frame(width: 100, height: 100)
+                    case .success(let image):
+                        image.resizable().scaledToFill().frame(width: 100, height: 100).clipShape(Circle())
+                    case .failure:
+                        Image(systemName: "person.crop.circle.fill")
+                            .resizable()
+                            .foregroundStyle(.gray)
+                            .frame(width: 100, height: 100)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
                 
                 Text("Hi, " + person.name)
                     .padding()
@@ -39,6 +48,13 @@ struct HomeView: View {
             Text("Updates for user go here")
             
             Spacer() // Top Aligns the Page
+        }
+        .task {
+            do {
+                self.profileImageURL = try await getProfileImageURL(for: person.id)
+            } catch {
+                print("Failed to load image URL: \(error)")
+            }
         }
     }
 }

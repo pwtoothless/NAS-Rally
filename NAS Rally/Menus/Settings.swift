@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Auth
+import Supabase
 
 struct SettingsView: View {
     @Binding var person: PersonInfo
@@ -64,13 +66,35 @@ struct SettingsView: View {
                     }
                 }
                 
-                // Logout Option
-                HStack {
-                    Text("Logout")
-                        .padding(.leading, 10)
+                // Logout Option - IMPLEMENTED BELOW
+                Button("Logout") {
+                    logout()
                 }
+                .frame(alignment: .center)
+                .buttonStyle(.bordered)
+                .foregroundColor(.primary)
             }
             .glassEffectCompat(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        }
+    }
+}
+
+// MARK: - Logout Implementation
+
+private func logout() {
+    Task {
+        do {
+            // Sign out from Supabase authentication
+            try await supabase.auth.signOut()
+            
+            // Clear the person binding (set to nil)
+            // _ = $person
+            
+            // Navigate back to LoginView
+            // This will be handled by the parent view's navigation stack
+            
+        } catch {
+            print("Logout failed: \(error)")
         }
     }
 }

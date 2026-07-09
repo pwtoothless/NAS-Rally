@@ -18,10 +18,12 @@ struct NAS_RallyApp: App {
                 if isLoading {
                     ProgressView("Loading Profile...")
                 } else if let person = personInfo {
-                    ContentView(person: Binding(
-                        get: { person },
-                        set: { personInfo = $0 }
-                    ))
+                    ContentView(
+                        person: Binding(
+                            get: { person },
+                            set: { personInfo = $0 }
+                        ),
+                    )
                 } else {
                     LoginView(person: Binding(
                         get: { personInfo ?? PersonInfo(id: UUID(), name: "", theme: "", bio: "", ralliesJoined: 0, rallieNames: [], privligeLevel: "", tos: false) },

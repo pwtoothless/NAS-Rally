@@ -25,8 +25,6 @@ struct WaversView: View {
                                 Text(person.rallieNames[idx])
                                     .font(.title)
                                     .bold()
-                                //Text(getWaivers(name: person.rallieNames[idx])) This will call a function to see all of the waivers that are apart of an event and display them all
-                                //There will also be a function call down here to determine weather the waiver has been signed.
                             }
                         }
                         .padding(.trailing, 30)
@@ -34,8 +32,8 @@ struct WaversView: View {
                     } //HStack Style
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity)
-                    .ignoresSafeArea(edges: .horizontal)
-                    .glassEffectCompat(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                    .padding()
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                 }
                 Spacer()
             }

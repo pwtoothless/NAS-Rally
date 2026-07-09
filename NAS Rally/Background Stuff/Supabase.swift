@@ -26,6 +26,12 @@ struct AnyEncodable: Encodable {
     }
 }
 
+
+// MARK: - Helper Function for Logout (can be moved to Supabase.swift)
+func logout() async {
+    try? await supabase.auth.signOut()
+}
+
 nonisolated private struct SupabasePersonRow: Codable {
     var id: UUID
     var name: String
