@@ -24,10 +24,27 @@ struct LoginView: View {
                     .font(.largeTitle)
                 
                 VStack {
-                    Image(.nasLogo)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 300, height: 100)
+                    AsyncImage(url: try? getRallyImageURL(for: "nasLogo")) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300, height: 100)
+                        case .failure(_):
+                            Image(systemName: "car.fill")
+                                .font(.system(size: 60))
+                                .foregroundColor(.gray)
+                                .opacity(0.3)
+                                .frame(width: 300, height: 100)
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 300, height: 100)
+                        @unknown default:
+                            ProgressView()
+                                .frame(width: 300, height: 100)
+                        }
+                    }
                     
                     TextField("Email", text: $EmailInput)
                         .textFieldStyle(.roundedBorder)
@@ -96,10 +113,27 @@ struct SignupView: View {
                 .font(.largeTitle)
             
             VStack {
-                Image(.nasLogo)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 300, height: 100)
+                AsyncImage(url: try? getRallyImageURL(for: "nasLogo")) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 300, height: 100)
+                    case .failure(_):
+                        Image(systemName: "car.fill")
+                            .font(.system(size: 60))
+                            .foregroundColor(.gray)
+                            .opacity(0.3)
+                            .frame(width: 300, height: 100)
+                    case .empty:
+                        ProgressView()
+                            .frame(width: 300, height: 100)
+                    @unknown default:
+                        ProgressView()
+                            .frame(width: 300, height: 100)
+                    }
+                }
                 
                 TextField("Name", text: $NameInput)
                     .textFieldStyle(.roundedBorder)
