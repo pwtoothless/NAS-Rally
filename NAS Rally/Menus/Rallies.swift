@@ -22,19 +22,42 @@ struct RalliesView: View {
                     HStack {
                         NavigationLink(destination: RallyInfoView(person: $person, rallyName: $person.rallieNames[idx])) {
                                 if person.rallieNames.indices.contains(idx) {
-                                    Image("RallyLogos/Logo" + person.rallieNames[idx])
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 100, height: 200)
-                                        .clipShape(Circle())
-                                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                                        .shadow(radius: 5)
+                                    AsyncImage(url: try? getRallyImageURL(for: person.rallieNames[idx])) { phase in
+                                        switch phase {
+                                        case .success(let image):
+                                            image
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 100, height: 100)
+                                                .clipShape(Circle())
+                                                .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                                .shadow(radius: 5)
+                                        case .failure:
+                                            Image(systemName: "car.circle.fill")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 100, height: 100)
+                                                .foregroundColor(.gray)
+                                                .opacity(0.5)
+                                                .clipShape(Circle())
+                                                .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                                .shadow(radius: 5)
+                                        case .empty: // Corrected: Separated .empty case
+                                            ProgressView()
+                                                .frame(width: 55, height: 44)
+                                        @unknown default: // Corrected: Separated @unknown default and placed last
+                                            ProgressView()
+                                                .frame(width: 100, height: 100)
+                                        }
+                                    }
                                 }
                                 else {
-                                    Image("RallyLogos/LogoUnknown")
+                                    Image(systemName: "car.circle.fill")
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: 100, height: 200)
+                                        .frame(width: 100, height: 100)
+                                        .foregroundColor(.gray)
+                                        .opacity(0.5)
                                         .clipShape(Circle())
                                         .overlay(Circle().stroke(Color.white, lineWidth: 2))
                                         .shadow(radius: 5)
@@ -52,6 +75,7 @@ struct RalliesView: View {
                             }
                         }
                     } //HStack Style
+                    .padding(.vertical, 8)
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity)
                     .ignoresSafeArea(edges: .horizontal)

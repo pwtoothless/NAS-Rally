@@ -228,3 +228,9 @@ func getProfileImageURL(for userID: UUID) throws -> URL {
         .from("Profile Pictures")
         .getPublicURL(path: userID.uuidString + "/images/profile.jpg")
 }
+
+func getRallyImageURL(for name: String) throws -> URL {
+    return try supabase.storage
+        .from("RallyLogos")
+        .getPublicURL(path: name + ".png")
+}

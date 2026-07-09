@@ -20,11 +20,30 @@ struct ChatView: View {
                     groupName: rally.name
                 )) {
                     HStack {
-                        Image("RallyLogos/Logo" + rally.name)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 50, height: 50)
-                            .clipShape(Circle())
+                        AsyncImage(url: try? getRallyImageURL(for: rally.name)) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                                    .clipShape(Circle())
+                            case .failure(_): // Corrected: Added pattern for the associated Error value
+                                Image(systemName: "car.circle.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.gray)
+                                    .opacity(0.5)
+                                    .clipShape(Circle())
+                            case .empty: // Corrected: Separated .empty case
+                                ProgressView()
+                                    .frame(width: 50, height: 50)
+                            @unknown default: // Corrected: Separated @unknown default and placed last
+                                ProgressView()
+                                    .frame(width: 50, height: 50)
+                            }
+                        }
                         Text(rally.name)
                     }
                 }
@@ -114,10 +133,38 @@ struct MessageThreadView: View {
                     
                     // 2. Perfectly Centered Group Content
                     VStack(spacing: 2) {
-                        Image("RallyLogos/Logo" + groupName)
-                            .resizable()
-                            .frame(width: 55, height: 44)
-                            .clipShape(Circle())
+                        AsyncImage(url: try? getRallyImageURL(for: groupName)) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                                    .clipShape(Circle())
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                    .shadow(radius: 5)
+                            case .failure(_): // Corrected: Added pattern for the associated Error value
+                                Image(systemName: "car.circle.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.gray)
+                                    .opacity(0.5)
+                                    .clipShape(Circle())
+                            case .empty: // Corrected: Separated .empty case
+                                ProgressView()
+                                    .frame(width: 50, height: 50)
+                                    .background(Circle().fill(Color.gray.opacity(0.1)))
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                    .shadow(radius: 5)
+                            @unknown default: // Corrected: Separated @unknown default and placed last
+                                ProgressView()
+                                    .frame(width: 50, height: 50)
+                                    .background(Circle().fill(Color.gray.opacity(0.1)))
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                    .shadow(radius: 5)
+                            }
+                        }
                         Text(groupName)
                             .font(.headline)
                             .foregroundStyle(.primary)
