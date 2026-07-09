@@ -67,12 +67,15 @@ struct SettingsView: View {
                 }
                 
                 // Logout Option - IMPLEMENTED BELOW
-                Button("Logout") {
-                    logout()
+                HStack {
+                    Spacer()
+                    Button("Logout") {
+                        logout()
+                    }
+                    .buttonStyle(.bordered)
+                    .foregroundColor(.primary)
+                    Spacer()
                 }
-                .frame(alignment: .center)
-                .buttonStyle(.bordered)
-                .foregroundColor(.primary)
             }
             .glassEffectCompat(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
         }

@@ -223,12 +223,8 @@ func updateProfile(person: PersonInfo) async throws {
         .execute()
 }
 
-func getProfileImageURL(for userID: UUID) async throws -> URL {
-    let signedURL = try await supabase.storage
+func getProfileImageURL(for userID: UUID) throws -> URL {
+    return try supabase.storage
         .from("Profile Pictures")
-        .createSignedURL(
-            path: userID.uuidString + "/images/profile.jpg",
-            expiresIn: 60 // URL expires in 60 seconds
-        )
-    return signedURL
+        .getPublicURL(path: userID.uuidString + "/images/profile.jpg")
 }

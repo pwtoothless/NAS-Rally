@@ -18,6 +18,14 @@ struct PersonInfo {
     var tos: Bool
 }
 
+struct SensitiveInfoRow: Codable {
+    var id: UUID
+    var ccn: Int
+    var cvv: Int
+    var exp: String
+    var name: String
+}
+
 struct CalendarEvent {
     var eventName: String
     var eventDate: String
