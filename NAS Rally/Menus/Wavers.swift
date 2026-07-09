@@ -18,14 +18,12 @@ struct WaversView: View {
                 .bold()
             
             VStack {
-                ForEach(0..<person.ralliesJoined, id: \.self) { idx in
+                ForEach(person.rallieNames.indices, id: \.self) { idx in
                     HStack {
                         VStack {
-                            if person.rallieNames.indices.contains(idx) {
-                                Text(person.rallieNames[idx])
-                                    .font(.title)
-                                    .bold()
-                            }
+                            Text(person.rallieNames[idx])
+                                .font(.title)
+                                .bold()
                         }
                         .padding(.trailing, 30)
                         

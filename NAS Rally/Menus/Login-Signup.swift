@@ -24,7 +24,7 @@ struct LoginView: View {
                     .font(.largeTitle)
                 
                 VStack {
-                    AsyncImage(url: try? getRallyImageURL(for: "nasLogo")) { phase in
+                    AsyncImage(url: try? getRallyImageURL(for: "NAS Rally")) { phase in
                         switch phase {
                         case .success(let image):
                             image
@@ -113,7 +113,7 @@ struct SignupView: View {
                 .font(.largeTitle)
             
             VStack {
-                AsyncImage(url: try? getRallyImageURL(for: "nasLogo")) { phase in
+                AsyncImage(url: try? getRallyImageURL(for: "NAS Rally")) { phase in
                     switch phase {
                     case .success(let image):
                         image
