@@ -41,6 +41,9 @@ nonisolated private struct SupabasePersonRow: Codable {
     var rallieNames: [String]?
     var privligeLevel: String?
     var tos: Bool?
+    var instaHandle: String?
+    var carModel: String?
+    var phoneNumber: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -51,6 +54,9 @@ nonisolated private struct SupabasePersonRow: Codable {
         case rallieNames = "rallie_names"
         case privligeLevel = "privilege_level"
         case tos
+        case instaHandle = "insta_handle"
+        case carModel = "car_model"
+        case phoneNumber = "phone_number"
     }
     
     var personInfo: PersonInfo {
@@ -62,7 +68,10 @@ nonisolated private struct SupabasePersonRow: Codable {
             ralliesJoined: ralliesJoined ?? 0,
             rallieNames: rallieNames ?? [],
             privligeLevel: privligeLevel ?? "User",
-            tos: tos ?? false
+            tos: tos ?? false,
+            instaHandle: instaHandle ?? "",
+            carModel: carModel ?? "",
+            phoneNumber: phoneNumber ?? ""
         )
     }
 }
@@ -88,6 +97,9 @@ nonisolated private struct NewSupabasePersonRow: Encodable {
     var rallieNames: [String]
     var privligeLevel: String
     var tos: Bool
+    var instaHandle: String? = nil
+    var carModel: String? = nil
+    var phoneNumber: String? = nil
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -98,6 +110,25 @@ nonisolated private struct NewSupabasePersonRow: Encodable {
         case rallieNames = "rallie_names"
         case privligeLevel = "privilege_level"
         case tos
+        case instaHandle = "insta_handle"
+        case carModel = "car_model"
+        case phoneNumber = "phone_number"
+    }
+}
+
+nonisolated private struct SupabaseProfileUpdateRow: Encodable {
+    var name: String
+    var bio: String
+    var instaHandle: String
+    var carModel: String
+    var phoneNumber: String
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case bio
+        case instaHandle = "insta_handle"
+        case carModel = "car_model"
+        case phoneNumber = "phone_number"
     }
 }
 
@@ -220,10 +251,13 @@ private func authErrorMessage(for error: any Error, fallback: String) -> String 
 func updateProfile(person: PersonInfo) async throws {
     guard !person.isTestUser else { return }
 
-    let updateData: [String: AnyEncodable] = [
-        "name": AnyEncodable(person.name),
-        "bio": AnyEncodable(person.bio)
-    ]
+    let updateData = SupabaseProfileUpdateRow(
+        name: person.name,
+        bio: person.bio,
+        instaHandle: person.instaHandle,
+        carModel: person.carModel,
+        phoneNumber: person.phoneNumber
+    )
     
     try await supabase.from("profiles")
         .update(updateData)

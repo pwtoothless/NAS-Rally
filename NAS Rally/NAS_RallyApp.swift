@@ -26,7 +26,7 @@ struct NAS_RallyApp: App {
                     )
                 } else {
                     LoginView(person: Binding(
-                        get: { personInfo ?? PersonInfo(id: UUID(), name: "", theme: "", bio: "", ralliesJoined: 0, rallieNames: [], privligeLevel: "", tos: false) },
+                        get: { personInfo ?? PersonInfo(id: UUID(), name: "", theme: "", bio: "", ralliesJoined: 0, rallieNames: [], privligeLevel: "", tos: false, instaHandle: "", carModel: "", phoneNumber: "") },
                         set: { personInfo = $0 }
                     ))
                 }

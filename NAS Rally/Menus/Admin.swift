@@ -14,12 +14,22 @@ struct AdminProfile: Codable, Identifiable {
     var name: String
     var bio: String
     var privligeLevel: String
+    var theme: String?
+    var tos: Bool?
+    var instaHandle: String?
+    var carModel: String?
+    var phoneNumber: String?
     
     enum CodingKeys: String, CodingKey {
         case id
         case name
         case bio
         case privligeLevel = "privilege_level"
+        case theme
+        case tos
+        case instaHandle = "insta_handle"
+        case carModel = "car_model"
+        case phoneNumber = "phone_number"
     }
 }
 
@@ -858,6 +868,23 @@ struct UserProfileDetailSheet: View {
                         Text(user.name)
                             .font(.title)
                             .bold()
+                        
+                        if let handle = user.instaHandle, !handle.isEmpty {
+                            Text("@\(handle)")
+                                .font(.subheadline)
+                                .foregroundColor(.blue)
+                        }
+                        
+                        if let car = user.carModel, !car.isEmpty {
+                            Text(car)
+                                .font(.subheadline)
+                        }
+                        
+                        if let phone = user.phoneNumber, !phone.isEmpty {
+                            Text(phone)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                         
                         if !user.bio.isEmpty {
                             Text(user.bio)

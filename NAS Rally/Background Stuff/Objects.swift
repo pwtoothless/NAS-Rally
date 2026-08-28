@@ -16,6 +16,9 @@ struct PersonInfo {
     var rallieNames: [String]
     var privligeLevel: String
     var tos: Bool
+    var instaHandle: String
+    var carModel: String
+    var phoneNumber: String
 }
 
 extension PersonInfo {
@@ -30,7 +33,10 @@ extension PersonInfo {
             ralliesJoined: 0,
             rallieNames: [],
             privligeLevel: "User",
-            tos: true
+            tos: true,
+            instaHandle: "",
+            carModel: "",
+            phoneNumber: ""
         )
     }
 
