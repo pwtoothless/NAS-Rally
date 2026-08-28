@@ -70,7 +70,7 @@ struct SettingsView: View {
                 HStack {
                     Spacer()
                     Button("Logout") {
-                        logout()
+                        logout(person: person)
                     }
                     .buttonStyle(.bordered)
                     .foregroundColor(.primary)
@@ -84,15 +84,14 @@ struct SettingsView: View {
 
 // MARK: - Logout Implementation
 
-private func logout() {
+private func logout(person: PersonInfo) {
+    guard !person.isTestUser else { return }
+
     Task {
         do {
             // Sign out from Supabase authentication
             try await supabase.auth.signOut()
-            
-            // Clear the person binding (set to nil)
-            // _ = $person
-            
+
             // Navigate back to LoginView
             // This will be handled by the parent view's navigation stack
             

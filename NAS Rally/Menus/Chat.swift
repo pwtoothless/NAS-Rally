@@ -56,16 +56,18 @@ struct ChatView: View {
     }
     
     private func fetchJoinedRallies() async {
-        guard !person.rallieNames.isEmpty else { return }
+        // Instead of querying rallies by name array, query groups the user is a member of.
         do {
-            let rows: [RallyRow] = try await supabase.from("rallies")
-                .select("id, name")
-                .in("name", values: person.rallieNames)
+            // Using PostgREST inner join syntax
+            let rows: [RallyRow] = try await supabase.from("groups")
+                .select("id, name, group_members!inner(user_id)")
+                .eq("group_members.user_id", value: person.id.uuidString)
                 .execute()
                 .value
+            
             self.availableRallies = rows
         } catch {
-            print("Error loading joined rallies: \(error)")
+            print("Error loading joined groups: \(error)")
         }
     }
 }

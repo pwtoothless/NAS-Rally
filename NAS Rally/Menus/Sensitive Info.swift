@@ -302,6 +302,8 @@ struct CardView: View {
     }
     
     private func loadSensitiveInfo() async {
+        guard !person.isTestUser else { return }
+
         isLoading = true
         do {
             let rows: [SensitiveInfoRow] = try await supabase.from("sensitiveInfo")
@@ -346,6 +348,13 @@ struct CardView: View {
     }
     
     private func saveCardInfo() {
+        if person.isTestUser {
+            message = "Card details are not saved for Test User."
+            isError = false
+            showToast = true
+            return
+        }
+
         isSaving = true
         isError = false
         message = ""

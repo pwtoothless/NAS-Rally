@@ -84,6 +84,8 @@ struct ProfileView: View {
             Spacer()
         }
         .task {
+            guard !person.isTestUser else { return }
+
             do {
                 self.profileImageURL = try await getProfileImageURL(for: person.id)
             } catch {

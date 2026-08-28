@@ -86,11 +86,25 @@ struct LoginView: View {
                 }
                 Spacer()
             }
+            .overlay(alignment: .bottomTrailing) {
+                Button("Test User") {
+                    loadTestUser()
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
+            }
             .navigationDestination(isPresented: $showContentView) {
                 ContentView(person: $person)
                     .navigationBarBackButtonHidden(true)
             }
         }
+    }
+
+    private func loadTestUser() {
+        loginErrorMessage = ""
+        isLoggingIn = false
+        person = .testUser
+        showContentView = true
     }
 }
 

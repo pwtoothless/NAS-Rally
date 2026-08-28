@@ -1,44 +1,61 @@
-//
-//  Wavers.swift
-//  NAS Rally
-//
-//  Created by Peyton Ward on 6/19/26.
-//
-
 import SwiftUI
 
 struct WaversView: View {
     @Binding var person: PersonInfo
+    @State private var pendingWaivers: [Waiver] = []
+    @State private var isLoading = true
     
     var body: some View {
         NavigationStack {
-            Text("Wavers")
-                .padding(.top, 10)
-                .padding(.bottom, 10)
-                .bold()
-            
             VStack {
-                ForEach(person.rallieNames.indices, id: \.self) { idx in
-                    HStack {
-                        VStack {
-                            Text(person.rallieNames[idx])
-                                .font(.title)
-                                .bold()
+                Text("Waivers")
+                    .font(.title2)
+                    .bold()
+                    .padding(.vertical, 10)
+                
+                if isLoading {
+                    ProgressView()
+                        .frame(maxHeight: .infinity)
+                } else if pendingWaivers.isEmpty {
+                    Text("No pending waivers.")
+                        .foregroundColor(.secondary)
+                        .frame(maxHeight: .infinity)
+                } else {
+                    ScrollView {
+                        VStack(spacing: 12) {
+                            ForEach(pendingWaivers) { waiver in
+                                HStack {
+                                    Text(waiver.waiver_name)
+                                        .font(.headline)
+                                    Spacer()
+                                    Image(systemName: "doc.text")
+                                        .foregroundColor(.blue)
+                                }
+                                .padding()
+                                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            }
                         }
-                        .padding(.trailing, 30)
-                        
-                    } //HStack Style
-                    .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                        .padding(.horizontal, 35)
+                    }
                 }
-                Spacer()
             }
-            //VStack Style - Moving off Edges
-            .padding(.leading, 35)
-            .padding(.trailing, 35)
+            .frame(maxWidth: .infinity)
+            .task {
+                await loadWaivers()
+            }
+            .refreshable {
+                await loadWaivers()
+            }
         }
-        .frame(maxWidth: .infinity)
+    }
+    
+    private func loadWaivers() async {
+        isLoading = true
+        do {
+            self.pendingWaivers = try await fetchUserWaivers(for: person.id)
+        } catch {
+            print("Failed to fetch waivers: \(error)")
+        }
+        isLoading = false
     }
 }

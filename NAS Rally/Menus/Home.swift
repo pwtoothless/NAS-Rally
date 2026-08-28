@@ -50,6 +50,8 @@ struct HomeView: View {
             Spacer() // Top Aligns the Page
         }
         .task {
+            guard !person.isTestUser else { return }
+
             do {
                 self.profileImageURL = try await getProfileImageURL(for: person.id)
             } catch {

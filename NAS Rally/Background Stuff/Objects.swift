@@ -18,6 +18,27 @@ struct PersonInfo {
     var tos: Bool
 }
 
+extension PersonInfo {
+    static let testUserID = UUID(uuid: (0x54, 0x45, 0x53, 0x54, 0x55, 0x53, 0x45, 0x52, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01))
+
+    static var testUser: PersonInfo {
+        PersonInfo(
+            id: testUserID,
+            name: "Test User",
+            theme: "Default",
+            bio: "Local development profile",
+            ralliesJoined: 0,
+            rallieNames: [],
+            privligeLevel: "User",
+            tos: true
+        )
+    }
+
+    var isTestUser: Bool {
+        id == Self.testUserID
+    }
+}
+
 struct SensitiveInfoRow: Codable {
     var id: UUID
     var ccn: Int

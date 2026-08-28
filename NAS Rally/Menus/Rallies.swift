@@ -23,7 +23,13 @@ struct RalliesView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                if isLoading && allRallies.isEmpty {
+                if person.isTestUser {
+                    ContentUnavailableView(
+                        "Test User",
+                        systemImage: "person.crop.circle.badge.checkmark",
+                        description: Text("Rallies are unavailable while using the local test profile.")
+                    )
+                } else if isLoading && allRallies.isEmpty {
                     VStack(spacing: 12) {
                         ProgressView()
                         Text("Loading rallies...")
@@ -108,6 +114,8 @@ struct RalliesView: View {
     }
     
     private func fetchAllRallies() async {
+        guard !person.isTestUser else { return }
+
         isLoading = true
         do {
             let rows: [DatabaseRally] = try await supabase.from("rallies")
@@ -295,29 +303,13 @@ struct RallyUserDetailSheet: View {
     private func fetchAttendeeCount() async {
         isLoadingCount = true
         do {
-            struct GroupRow: Decodable {
-                let id: UUID
-            }
-            
-            // 1. Fetch group_id by matching name
-            let groups: [GroupRow] = try await supabase.from("groups")
-                .select("id")
-                .eq("name", value: rally.name)
+            // Use PostgREST exact count feature to avoid downloading rows
+            let countResponse = try await supabase.from("rally_participants")
+                .select("user_id", head: true, count: .exact)
+                .eq("rally_id", value: rally.id.uuidString)
                 .execute()
-                .value
             
-            if let groupId = groups.first?.id {
-                // 2. Fetch member count from group_members
-                struct GroupMemberRow: Decodable {
-                    let user_id: UUID
-                }
-                let members: [GroupMemberRow] = try await supabase.from("group_members")
-                    .select("user_id")
-                    .eq("group_id", value: groupId)
-                    .execute()
-                    .value
-                self.attendeeCount = members.count
-            }
+            self.attendeeCount = countResponse.count ?? 0
         } catch {
             print("Error loading attendee count: \(error)")
         }
@@ -328,20 +320,31 @@ struct RallyUserDetailSheet: View {
         isSendingRequest = true
         
         Task {
-            // --- MOCK JOIN REQUEST UPLOAD LOGIC ---
-            // In a production environment:
-            // Since the request function hasn't been implemented yet,
-            // we will simulate the delay of sending an invitation/request row
-            // to a 'rally_requests' table in database for Admin approval.
-            
-            try? await Task.sleep(nanoseconds: 1_200_000_000)
-            
-            toastMessage = "Join request sent to Admin!"
-            showToast = true
-            
-            try? await Task.sleep(nanoseconds: 2_000_000_000)
-            showToast = false
-            dismiss()
+            do {
+                struct RallyRequestInsert: Encodable {
+                    let user_id: UUID
+                    let rally_id: UUID
+                }
+                
+                let newRequest = RallyRequestInsert(user_id: person.id, rally_id: rally.id)
+                
+                try await supabase.from("rally_requests")
+                    .insert(newRequest)
+                    .execute()
+                
+                toastMessage = "Join request sent to Admin!"
+                showToast = true
+                
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                showToast = false
+                dismiss()
+            } catch {
+                print("Failed to send request: \(error)")
+                toastMessage = "Failed to send request."
+                showToast = true
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                showToast = false
+            }
             isSendingRequest = false
         }
     }

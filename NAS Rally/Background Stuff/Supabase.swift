@@ -9,7 +9,7 @@ import Foundation
 import Supabase
 
 let supabase = SupabaseClient(
-    supabaseURL: URL(string: "http://24.19.76.199:8000")!,
+    supabaseURL: URL(string: "http://24.16.3.100:8000")!,
     supabaseKey: "sb_publishable_xflKOJnjZKIKm7f_Ri4Bn4_7-zhLiVC"
 )
 
@@ -34,13 +34,13 @@ func logout() async {
 
 nonisolated private struct SupabasePersonRow: Codable {
     var id: UUID
-    var name: String
-    var theme: String
-    var bio: String
-    var ralliesJoined: Int
-    var rallieNames: [String]
-    var privligeLevel: String
-    var tos: Bool
+    var name: String?
+    var theme: String?
+    var bio: String?
+    var ralliesJoined: Int?
+    var rallieNames: [String]?
+    var privligeLevel: String?
+    var tos: Bool?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -56,13 +56,13 @@ nonisolated private struct SupabasePersonRow: Codable {
     var personInfo: PersonInfo {
         PersonInfo(
             id: id,
-            name: name,
-            theme: theme,
-            bio: bio,
-            ralliesJoined: ralliesJoined,
-            rallieNames: rallieNames,
-            privligeLevel: privligeLevel,
-            tos: tos
+            name: name ?? "",
+            theme: theme ?? "Default",
+            bio: bio ?? "",
+            ralliesJoined: ralliesJoined ?? 0,
+            rallieNames: rallieNames ?? [],
+            privligeLevel: privligeLevel ?? "User",
+            tos: tos ?? false
         )
     }
 }
@@ -87,6 +87,7 @@ nonisolated private struct NewSupabasePersonRow: Encodable {
     var ralliesJoined: Int
     var rallieNames: [String]
     var privligeLevel: String
+    var tos: Bool
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -96,6 +97,7 @@ nonisolated private struct NewSupabasePersonRow: Encodable {
         case ralliesJoined = "rallies_joined"
         case rallieNames = "rallie_names"
         case privligeLevel = "privilege_level"
+        case tos
     }
 }
 
@@ -133,7 +135,8 @@ func signup(Name: String, Email: String, Password: String) async -> AuthResult {
             bio: "",
             ralliesJoined: 0,
             rallieNames: [],
-            privligeLevel: "User"
+            privligeLevel: "User",
+            tos: false
         )
         
         try await supabase.from("profiles")
@@ -170,7 +173,8 @@ private func loadPersonInfoOrCreateDefault(userID: UUID, name: String) async thr
             bio: "",
             ralliesJoined: 0,
             rallieNames: [],
-            privligeLevel: "User"
+            privligeLevel: "User",
+            tos: false
         )
         
         let insertedPerson: SupabasePersonRow = try await supabase.from("profiles")
@@ -189,6 +193,8 @@ private func authErrorMessage(for error: any Error, fallback: String) -> String 
         switch urlError.code {
         case .cannotConnectToHost, .cannotFindHost, .networkConnectionLost, .notConnectedToInternet, .timedOut:
             return "Could not connect to the server. Check the network or Supabase server."
+        case .secureConnectionFailed, .serverCertificateHasBadDate, .serverCertificateUntrusted, .serverCertificateHasUnknownRoot, .serverCertificateNotYetValid:
+            return "Could not establish a secure connection to the server. Check the HTTPS certificate and proxy configuration."
         default:
             return urlError.localizedDescription
         }
@@ -208,10 +214,12 @@ private func authErrorMessage(for error: any Error, fallback: String) -> String 
         }
     }
     
-    return "Signup failed. Please try again."
+    return error.localizedDescription.isEmpty ? fallback : error.localizedDescription
 }
 
 func updateProfile(person: PersonInfo) async throws {
+    guard !person.isTestUser else { return }
+
     let updateData: [String: AnyEncodable] = [
         "name": AnyEncodable(person.name),
         "bio": AnyEncodable(person.bio)
@@ -233,4 +241,32 @@ func getRallyImageURL(for name: String) throws -> URL {
     return try supabase.storage
         .from("RallyLogos")
         .getPublicURL(path: name + ".png")
+}
+
+
+// MARK: - Waiver Models
+
+struct Waiver: Codable, Identifiable {
+    let id: UUID
+    let waiver_name: String
+    
+    // CodingKeys ensure it maps perfectly to your Supabase columns
+    enum CodingKeys: String, CodingKey {
+        case id
+        case waiver_name
+    }
+}
+
+// MARK: - Waiver Fetching
+
+func fetchUserWaivers(for userID: UUID) async throws -> [Waiver] {
+    // Uses an inner join through the rallies table to find only the
+    // waivers for rallies where the user is an active participant.
+    let waivers: [Waiver] = try await supabase.from("waivers")
+        .select("id, waiver_name, rallies!inner(rally_participants!inner(user_id))")
+        .eq("rallies.rally_participants.user_id", value: userID.uuidString)
+        .execute()
+        .value
+        
+    return waivers
 }
